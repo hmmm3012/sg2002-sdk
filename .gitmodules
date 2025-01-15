@@ -1,88 +1,88 @@
 [submodule "build"]
 	path = build
-	url = "https://github.com/hmmm3012/build.git"
-	branch = "sg2002-dev"
+	url = https://github.com/hmmm3012/build.git
+	branch = sg2002-dev
 [submodule "oss"]
 	path = oss
 	url = "https://github.com/hmmm3012/oss.git"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "host-tools"]
 	path = host-tools
 	url = "https://github.com/hmmm3012/host-tools.git"
-	branch ="master"
+	branch = master
 [submodule "cvikernel"]
 	path = cvikernel
 	url = "https://github.com/hmmm3012/cvikernel"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cnpy"]
 	path = cnpy
 	url = "https://github.com/hmmm3012/cnpy"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cvibuilder"]
 	path = cvibuilder
 	url = "https://github.com/hmmm3012/cvibuilder"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cvimath"]
 	path = cvimath
 	url = "https://github.com/hmmm3012/cvimath"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cvi_mpi"]
 	path = cvi_mpi
 	url = "https://github.com/hmmm3012/cvi_mpi"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cvi_rtsp"]
 	path = cvi_rtsp
 	url = "https://github.com/hmmm3012/cvi_rtsp"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "cviruntime"]
 	path = cviruntime
 	url = "https://github.com/hmmm3012/cviruntime"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "flatbuffers"]
 	path = flatbuffers
 	url = "https://github.com/hmmm3012/flatbuffers"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "freertos"]
 	path = freertos
 	url = "https://github.com/hmmm3012/freertos"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "fsbl"]
 	path = fsbl
 	url = "https://github.com/hmmm3012/fsbl"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "osdrv"]
 	path = osdrv
 	url = "https://github.com/hmmm3012/osdrv"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "opensbi"]
 	path = opensbi
 	url = "https://github.com/hmmm3012/opensbi"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "linux_5.10"]
 	path = linux_5.10
 	url = "https://github.com/hmmm3012/linux_5.10"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "ramdisk"]
 	path = ramdisk
 	url = "https://github.com/hmmm3012/ramdisk"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "isp_tuning"]
 	path = isp_tuning
 	url = "https://github.com/hmmm3012/isp_tuning"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "u-boot-2021.10"]
 	path = u-boot-2021.10
 	url = "https://github.com/hmmm3012/u-boot-2021.10"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "tdl_sdk"]
 	path = tdl_sdk
 	url = "https://github.com/hmmm3012/tdl_sdk"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "freertos-kernel"]
 	path = freertos/Source
 	url = "https://github.com/hmmm3012/FreeRTOS-Kernel.git"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
 [submodule "freertos-posix"]
 	path = freertos/Source/FreeRTOS-Plus-POSIX
 	url = "https://github.com/hmmm3012/Lab-Project-FreeRTOS-POSIX.git"
-	branch = "sg2002-dev"
+	branch = sg2002-dev
