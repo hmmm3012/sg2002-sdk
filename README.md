@@ -1,6 +1,8 @@
 # SG2002 SDK
 
-# How to use ? 
+- This is a common repo which stores multi submodules recursively.
+
+# How to set up ? 
 
 ## Basic
 
@@ -11,6 +13,8 @@
 ```
 git clone --recurse-submodules git@github.com:hmmm3012/sg2002-sdk.git
 ```
+
+- Using https :
 
 2. Build Docker image 
 
