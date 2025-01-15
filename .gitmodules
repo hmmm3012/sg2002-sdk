@@ -42,10 +42,6 @@
 	path = flatbuffers
 	url = https://github.com/hmmm3012/flatbuffers.git
 	branch = sg2002-dev
-[submodule "freertos"]
-	path = freertos
-	url = https://github.com/hmmm3012/freertos.git
-	branch = sg2002-dev
 [submodule "fsbl"]
 	path = fsbl
 	url = https://github.com/hmmm3012/fsbl.git
