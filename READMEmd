@@ -1,0 +1,11 @@
+# SG2002 SDK
+
+# How to use ?
+
+1. Clone this repo
+
+- Using SSH (recommend) :
+
+```
+git clone git@github.com:hmmm3012/sg2002-sdk.git
+```
