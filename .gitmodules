@@ -78,3 +78,11 @@
 	path = tdl_sdk
 	url = "https://github.com/hmmm3012/tdl_sdk"
 	branch = "sg2002-dev"
+[submodule "freertos-kernel"]
+	path = freertos/Source
+	url = "https://github.com/hmmm3012/FreeRTOS-Kernel.git"
+	branch = "sg2002-dev"
+[submodule "freertos-posix"]
+	path = freertos/Source/FreeRTOS-Plus-POSIX
+	url = "https://github.com/hmmm3012/Lab-Project-FreeRTOS-POSIX.git"
+	branch = "sg2002-dev"
