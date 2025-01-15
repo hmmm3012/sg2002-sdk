@@ -42,7 +42,7 @@ build_all
 
 # Rules
 
-- 
+- After clone, create your own branch then start develop.
 
 # Directories
 
