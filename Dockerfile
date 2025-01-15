@@ -52,6 +52,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN pip install jinja2
 RUN groupadd -g $GID myuser && \
     useradd -u $UID -g myuser -ms /bin/bash myuser
+
 USER myuser
 WORKDIR /workspace
 
