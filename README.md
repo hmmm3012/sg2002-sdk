@@ -16,6 +16,10 @@ git clone --recurse-submodules git@github.com:hmmm3012/sg2002-sdk.git
 
 - Using https :
 
+```
+git clone --recurse-submodules https://github.com/hmmm3012/sg2002-sdk.git
+```
+
 2. Build Docker image 
 
 ```
@@ -44,6 +48,11 @@ defconfig sg2002_wevb_riscv64_sd
 build_all
 ```
 
+- Build a specific component:
+```
+build
+```
+
 # Rules
 
 - After clone, create your own branch then start develop.
@@ -64,7 +73,6 @@ cviruntime: TPU library
 linux_5.10: Linux kernel v5.10 source
 fsbl: first stage bootloader
 buildroot-2021.05: Buildroot 2021.05 source (build toolchain)
-
 ```
 
 # Documents
