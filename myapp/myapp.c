@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
         av_dict_set(&opts, "rtsp_transport", "tcp", 0);
 
         avFrameCounter = 0;
+        int isEnd = 0;
         while (1)
         {
             pFormatCtx = avformat_alloc_context();
@@ -173,50 +174,63 @@ int main(int argc, char *argv[])
                 continue;
             }
 
-            while (av_read_frame(pFormatCtx, &pkt) >= 0)
+            while (av_read_frame(pFormatCtx, &pkt) >= 0 && !isEnd)
             {
                 if (pkt.stream_index == videoStreamIndex)
                 {
-                    if (avFrameCounter % 100 == 0)
-                    {
-                        printf("Frame %d\n", avFrameCounter);
-                        printf("Frame width %d\n", pCodecCtx->width);
-                        printf("Frame height %d\n", pCodecCtx->height);
-                        printf("Frame size %d\n", pkt.size);
+                    if (avFrameCounter == 300){
+                        isEnd = 1;
+                        break;
                     }
-                    avFrameCounter++;
+                    memset(&stStream, 0, sizeof(stStream));
                     stStream.u64PTS = pkt.pts;
                     stStream.pu8Addr = pkt.data;
                     stStream.u32Len = pkt.size;
                     stStream.bEndOfFrame = CVI_TRUE;
                     stStream.bEndOfStream = bEndOfStream;
 
-                    s32Ret = CVI_VDEC_SendStream(stVdecCfg.s32ChnNum, &stStream, 10000);
+                    CVI_S32 retry_count = 0;
+                    while (retry_count < 3)
+                    {
+                        s32Ret = CVI_VDEC_SendStream(stVdecCfg.s32ChnNum, &stStream, 1000);
+                        if (s32Ret == CVI_SUCCESS)
+                        {
+                            break;
+                        }
+                        retry_count++;
+                        usleep(1000);
+                    }
+
                     if (s32Ret != CVI_SUCCESS)
                     {
-                        printf("Error sending stream to VDEC: %x\n", s32Ret);
-                        break;
+                        printf("Error sending stream to VDEC after retries: %x\n", s32Ret);
+                        av_packet_unref(&pkt);
+                        continue;
                     }
-                    s32Ret = CVI_VDEC_GetFrame(stVdecCfg.s32ChnNum, &stFrameInfo, 10000);
+
+                    s32Ret = CVI_VDEC_GetFrame(stVdecCfg.s32ChnNum, &stFrameInfo, 1000);
                     if (s32Ret == CVI_SUCCESS)
                     {
-                        printf("Got frame from VPSS: W=%d, H=%d, stride=%d\n",
-                               stFrameInfo.stVFrame.u32Width,
-                               stFrameInfo.stVFrame.u32Height,
-                               stFrameInfo.stVFrame.u32Stride[0]);
+                        if (avFrameCounter % 100 == 0)
+                        {
+                            printf("Got frame %d: W=%d, H=%d, stride=%d\n",
+                                   avFrameCounter,
+                                   stFrameInfo.stVFrame.u32Width,
+                                   stFrameInfo.stVFrame.u32Height,
+                                   stFrameInfo.stVFrame.u32Stride[0]);
+                        }
 
-                        // write_yuv(fpYuv, stFrameInfo.stVFrame);
-                        printf("Frame written to YUV file\n");
-
-                        // Release VPSS frame instead of VDEC frame
-                        CVI_VDEC_ReleaseFrame(stVdecCfg.s32ChnNum, &stFrameInfo);
-                        // printf("Frame released from VPSS\n");
+                        if (CVI_VDEC_ReleaseFrame(stVdecCfg.s32ChnNum, &stFrameInfo) != CVI_SUCCESS)
+                        {
+                            printf("Warning: Failed to release frame\n");
+                        }
                     }
-                    else
+                    else if (s32Ret != CVI_ERR_VDEC_BUF_EMPTY)
                     {
                         printf("Failed to get frame from VDEC, error: 0x%x\n", s32Ret);
                     }
 
+                    avFrameCounter++;
                 }
                 av_packet_unref(&pkt);
             }
@@ -230,6 +244,9 @@ int main(int argc, char *argv[])
             avcodec_free_context(&pCodecCtx);
             avformat_close_input(&pFormatCtx);
             retry++;
+            if(isEnd){
+                break;
+            }
         }
     }
 
