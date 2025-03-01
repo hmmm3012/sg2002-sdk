@@ -1,0 +1,14 @@
+prefix=riscv_install
+exec_prefix=${prefix}
+libdir=riscv_install/lib
+includedir=riscv_install/include
+
+Name: libavresample
+Description: Libav audio resampling library
+Version: 4.0.0
+Requires: 
+Requires.private: libavutil >= 56.70.100
+Conflicts:
+Libs: -L${libdir}  -lavresample 
+Libs.private: -lm
+Cflags: -I${includedir}

@@ -1,0 +1,14 @@
+prefix=riscv_install
+exec_prefix=${prefix}
+libdir=riscv_install/lib
+includedir=riscv_install/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 5.9.100
+Requires: 
+Requires.private: libavutil >= 56.70.100
+Conflicts:
+Libs: -L${libdir}  -lswscale 
+Libs.private: -lm -latomic
+Cflags: -I${includedir}
