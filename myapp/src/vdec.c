@@ -168,48 +168,21 @@ CVI_S32 start_vdec(VDEC_PARAM_S *pVdecParam)
 
 CVI_S32 VDEC_INIT(CVI_S32 decoding_file_num, VDEC_CONFIG_S *stVdecCfg)
 {
-
-    // VB_CONFIG_S stVbConf;
-    // CVI_U32 u32BlkSize;
-    // SIZE_S stSize;
     CVI_S32 s32Ret = CVI_SUCCESS;
-    // CVI_S32 VencChn = 0;
-    // int filelen;
-
-    /************************************************
-     * step1:  Init VDEC
-     ************************************************/
-    // VDEC_CONFIG_S stVdecCfg = {0};
     VDEC_PARAM_S *pVdecChn[MAX_VDEC_NUM] = {0};
 
-    // stVdecCfg.s32ChnNum = decoding_file_num;
     stVdecCfg->s32ChnNum = decoding_file_num;
 
     for (int i = 0; i < stVdecCfg->s32ChnNum; i++)
     {
         pVdecChn[i] = &stVdecCfg->astVdecParam[i];
         pVdecChn[i]->VdecChn = i;
-        pVdecChn[i]->stop_thread = CVI_FALSE;
-        // pVdecChn[i]->bind_mode = VDEC_BIND_VPSS;
-        // filelen = snprintf(pVdecChn[i]->decode_file_name, 63, "%s", (char *)s_h264file[i]);
-        // pVdecChn[i]->stChnAttr.enType = find_file_type(pVdecChn[i]->decode_file_name, filelen);
         pVdecChn[i]->stChnAttr.enType = PT_H264;
-        pVdecChn[i]->stChnAttr.enMode = VIDEO_MODE_STREAM;
+        pVdecChn[i]->stChnAttr.enMode = VIDEO_MODE_STREAM; // Changed from FRAME to STREAM
         pVdecChn[i]->stChnAttr.u32PicWidth = VDEC_WIDTH;
         pVdecChn[i]->stChnAttr.u32PicHeight = VDEC_HEIGHT;
-        pVdecChn[i]->stChnAttr.u32StreamBufSize = VDEC_WIDTH * VDEC_HEIGHT * 3; // Triple buffer size
-        pVdecChn[i]->stChnAttr.u32FrameBufCnt = 4;
-        // if (pVdecChn[i]->stChnAttr.enType == PT_JPEG || pVdecChn[i]->stChnAttr.enType == PT_MJPEG)
-        // {
-        // 	pVdecChn[i]->stChnAttr.u32FrameBufSize = VDEC_GetPicBufferSize(
-        // 		pVdecChn[i]->stChnAttr.enType, pVdecChn[i]->stChnAttr.u32PicWidth,
-        // 		pVdecChn[i]->stChnAttr.u32PicHeight, PIXEL_FORMAT_YUV_PLANAR_444,
-        // 		DATA_BITWIDTH_8, COMPRESS_MODE_NONE);
-        // }
-        // pVdecChn[i]->stDispRect.s32X = (VPSS_WIDTH >> (stVdecCfg.s32ChnNum - 1)) * i;
-        // pVdecChn[i]->stDispRect.s32Y = 0;
-        // pVdecChn[i]->stDispRect.u32Width = (VPSS_WIDTH >> (stVdecCfg.s32ChnNum - 1));
-        // pVdecChn[i]->stDispRect.u32Height = 1080;
+        pVdecChn[i]->stChnAttr.u32StreamBufSize = VDEC_WIDTH * VDEC_HEIGHT * 3;
+        pVdecChn[i]->stChnAttr.u32FrameBufCnt = 8; // Increased buffer count
         pVdecChn[i]->vdec_vb_source = VB_SOURCE_COMMON;
         pVdecChn[i]->vdec_pixel_format = PIXEL_FORMAT_YUV_PLANAR_420;
     }
@@ -226,7 +199,7 @@ CVI_S32 VDEC_INIT(CVI_S32 decoding_file_num, VDEC_CONFIG_S *stVdecCfg)
         astSampleVdec[i].u32Width = VDEC_WIDTH;
         astSampleVdec[i].u32Height = VDEC_HEIGHT;
 
-        astSampleVdec[i].enMode = VIDEO_MODE_FRAME;
+        astSampleVdec[i].enMode = VIDEO_MODE_STREAM;
         astSampleVdec[i].stSampleVdecVideo.enDecMode = VIDEO_DEC_MODE_IP;
         astSampleVdec[i].stSampleVdecVideo.enBitWidth = DATA_BITWIDTH_8;
         astSampleVdec[i].stSampleVdecVideo.u32RefFrameNum = 2;
@@ -258,31 +231,31 @@ CVI_S32 VDEC_INIT(CVI_S32 decoding_file_num, VDEC_CONFIG_S *stVdecCfg)
 
 static void get_chroma_size_shift_factor(PIXEL_FORMAT_E enPixelFormat, CVI_S32 *w_shift, CVI_S32 *h_shift)
 {
-	switch (enPixelFormat)
-	{
-	case PIXEL_FORMAT_YUV_PLANAR_420:
-		*w_shift = 1;
-		*h_shift = 1;
-		break;
-	case PIXEL_FORMAT_YUV_PLANAR_422:
-		*w_shift = 1;
-		*h_shift = 0;
-		break;
-	case PIXEL_FORMAT_YUV_PLANAR_444:
-		*w_shift = 0;
-		*h_shift = 0;
-		break;
-	case PIXEL_FORMAT_NV12:
-	case PIXEL_FORMAT_NV21:
-		*w_shift = 0;
-		*h_shift = 1;
-		break;
-	case PIXEL_FORMAT_YUV_400: // no chroma
-	default:
-		*w_shift = 31;
-		*h_shift = 31;
-		break;
-	}
+    switch (enPixelFormat)
+    {
+    case PIXEL_FORMAT_YUV_PLANAR_420:
+        *w_shift = 1;
+        *h_shift = 1;
+        break;
+    case PIXEL_FORMAT_YUV_PLANAR_422:
+        *w_shift = 1;
+        *h_shift = 0;
+        break;
+    case PIXEL_FORMAT_YUV_PLANAR_444:
+        *w_shift = 0;
+        *h_shift = 0;
+        break;
+    case PIXEL_FORMAT_NV12:
+    case PIXEL_FORMAT_NV21:
+        *w_shift = 0;
+        *h_shift = 1;
+        break;
+    case PIXEL_FORMAT_YUV_400: // no chroma
+    default:
+        *w_shift = 31;
+        *h_shift = 31;
+        break;
+    }
 }
 
 int write_yuv(FILE *out_f, VIDEO_FRAME_S stVFrame)

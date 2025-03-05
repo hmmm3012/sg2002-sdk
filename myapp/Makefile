@@ -78,4 +78,7 @@ copy_libs:
 clean:
 	@rm -rf $(BUILD_DIR)
 
+scp:
+	@scp $(TARGET) root@10.157.93.1:/root/
+
 -include $(DEPS)
